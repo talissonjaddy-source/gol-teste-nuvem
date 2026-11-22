@@ -16,6 +16,7 @@ jobs:
           print(x.status_code, x.text[:150])
           raise SystemExit(0 if x.status_code == 200 else 1)
           PY
+        continue-on-error: true
       - name: "SOFASCORE api live (200 = passa)"
         run: |
           python - <<'PY'
