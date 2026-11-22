@@ -1,0 +1,27 @@
+name: teste-sofascore
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  teste:
+    runs-on: ubuntu-latest
+    steps:
+      - name: instalar curl_cffi
+        run: pip install curl_cffi
+      - name: "SOFASCORE www live (200 = passa)"
+        run: |
+          python - <<'PY'
+          from curl_cffi import requests as r
+          x = r.get("https://www.sofascore.com/api/v1/sport/football/events/live", impersonate="chrome", timeout=30)
+          print(x.status_code, x.text[:150])
+          raise SystemExit(0 if x.status_code == 200 else 1)
+          PY
+      - name: "SOFASCORE api live (200 = passa)"
+        run: |
+          python - <<'PY'
+          from curl_cffi import requests as r
+          x = r.get("https://api.sofascore.com/api/v1/sport/football/events/live", impersonate="chrome", timeout=30)
+          print(x.status_code, x.text[:150])
+          raise SystemExit(0 if x.status_code == 200 else 1)
+          PY
+        continue-on-error: true
